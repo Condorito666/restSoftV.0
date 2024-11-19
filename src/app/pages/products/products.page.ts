@@ -5,18 +5,41 @@ import categoryData from '../../../assets/categories.json';
 import { CartService } from 'src/app/services/cart.service';
 import { ModalController } from '@ionic/angular';
 import { FilterModalPage } from '../filter-modal/filter-modal.page';
+import { Product } from 'src/app/models/product.model';
+import { InventoryService } from 'src/app/services/inventory.service';
+import { category } from 'src/app/models/category.model';
+import { filter } from 'rxjs';
 @Component({
   selector: 'app-products',
   templateUrl: './products.page.html',
   styleUrls: ['./products.page.scss'],
 })
 export class ProductsPage implements OnInit {
-  products = [];
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
+  categories: category[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private cartService: CartService,
-    private modalCtrl: ModalController
-  ) {}
+    private modalCtrl: ModalController,
+    private inventoryService: InventoryService
+  ) {
+    this.inventoryService.getInventory().subscribe((products) => {
+      this.products = products;
+    });
+  }
+
+  ngOnInit() {
+    this.inventoryService.getInventory().subscribe((products) => {
+      this.products = products;
+      this.filteredProducts = products;
+    });
+
+    this.inventoryService.getCategories().subscribe((categories) => {
+      this.categories = categories;
+    });
+  }
 
   async openFilter() {
     const modal = await this.modalCtrl.create({
@@ -25,7 +48,7 @@ export class ProductsPage implements OnInit {
       initialBreakpoint: 0.5,
       handle: false,
       componentProps: {
-        categories: categoryData,
+        categories: this.categories,
       },
     });
     await modal.present();
@@ -35,21 +58,14 @@ export class ProductsPage implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      this.filterProducts(params['category']);
-    });
+  filterProducts(categorySlug: string) {
+    this.inventoryService
+      .filterProducts(categorySlug)
+      .subscribe((filteredProducts) => {
+        this.filteredProducts = filteredProducts;
+      });
   }
-
-  filterProducts(category = null) {
-    if (!category) {
-      this.products = productData;
-    } else {
-      const cat = categoryData.filter((item) => item.slug == category)[0];
-      this.products = productData.filter((p) => p.category == cat.id);
-    }
-  }
-  addProduct(product) {
+  addProductToCart(product) {
     this.cartService.addProduct(product);
   }
 }

@@ -1,16 +1,4 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="tabs/home" text=""></ion-back-button>
-    </ion-buttons>
-    <ion-title class="ion-text-center"
-      ><img src="./assets/imgs/logo.png" class="logo" alt=""
-    /></ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="clear"> Help </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-header></app-header>
 <ion-content class="ion-text-center">
   <ion-text class="ion-hide-md-down">
     <h1>elige tu pipza</h1>
@@ -23,18 +11,20 @@
             tappable
             [routerLink]="[p.id]"
             class="product-image"
-            [style.background-image]="'url('+p.img+')'"
-          ></div>
+            [style.background-image]="p.imageUrl"
+          >
+            <img [src]="p.imageUrl" alt="" />
+          </div>
           <ion-card-content tappable [routerLink]="[ p.id]">
-            <ion-label>
-              <b>{{ p.title}}</b>
-              <p>{{ p.price | currency: 'USD' }}</p>
+            <ion-label color="primary" background-color="primary">
+              <b>{{ p.name}}</b>
+              <p>{{ p.price | currency: 'CLP' : 'symbol-narrow'}}</p>
             </ion-label>
           </ion-card-content>
           <ion-button
             class="ion-no-margin"
             expand="full"
-            (click)="addProduct(p)"
+            (click)="addProductToCart(p)"
           >
             <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
           </ion-button>

@@ -28,13 +28,20 @@ const routes: Routes = [
       {
         path: 'perfil',
         loadChildren: () =>
-          import('../perfil/menu.module').then((m) => m.MenuPageModule),
+          import('../perfil/perfil.module').then((m) => m.PerfilPageModule),
       },
       {
         path: 'cart',
         loadChildren: () =>
           import('../cart-modal/cart-modal.module').then(
             (m) => m.CartModalPageModule
+          ),
+      },
+      {
+        path: 'settings',
+        loadChildren: () =>
+          import('../settings/settings.module').then(
+            (m) => m.SettingsPageModule
           ),
       },
     ],

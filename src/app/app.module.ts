@@ -18,6 +18,7 @@ import {
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { Capacitor } from '@capacitor/core';
+import firebase from 'firebase/compat/app';
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,6 +37,8 @@ import { Capacitor } from '@capacitor/core';
     }),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
+
+    provideAuth(() => getAuth()),
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
