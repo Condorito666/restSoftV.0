@@ -81,7 +81,7 @@ export class InventoryService {
       category[]
     >;
   }
-  filterProducts(categorySlug: string): Observable<Product[]> {
+  filterProductsByCategory(categorySlug: string): Observable<Product[]> {
     return new Observable((observer) => {
       this.getInventory().subscribe((products) => {
         if (!categorySlug) {
