@@ -32,3 +32,22 @@ ion-fab-button {
   border: 3px groove;
   border-radius: 50%;
 }
+.custom-segment {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+  overflow-x: scroll;
+
+  ion-segment-button {
+    flex: 1;
+    margin: 0 5px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 10px 5px;
+    font-size: 14px;
+  }
+}
+::-webkit-scrollbar {
+  display: none;
+}

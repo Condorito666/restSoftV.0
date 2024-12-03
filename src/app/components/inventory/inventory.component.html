@@ -1,0 +1,77 @@
+<div>
+  <div class="preview">
+    <ion-avatar tappable (click)="takePicture()">
+      <img
+        *ngIf="newProduct.imageUrl; else placheolder_avatar"
+        [src]="newProduct.imageUrl"
+      />
+      <ng-template #placheolder_avatar>
+        <div class="fallback">
+          <p>Foto Producto</p>
+        </div>
+      </ng-template>
+    </ion-avatar>
+  </div>
+  <ion-item>
+    <ion-select
+      aria-label="categoria"
+      placeholder="Categoría"
+      [(ngModel)]="newProduct.category"
+      interface="popover"
+    >
+      <ion-select-option
+        *ngFor="let category of categories"
+        [value]="category.id"
+      >
+        {{ category.title }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Nombre</ion-label>
+    <ion-input
+      type="text"
+      placeholder="Nombre"
+      [(ngModel)]="newProduct.name"
+      aria-required="true"
+    ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Precio</ion-label>
+    <ion-input
+      type="text"
+      placeholder="Precio"
+      [(ngModel)]="newProduct.price"
+      aria-required="true"
+    ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Descripción</ion-label>
+    <ion-input
+      type="text"
+      placeholder="Descripción"
+      [(ngModel)]="newProduct.description"
+      aria-required="true"
+    ></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Stock</ion-label>
+    <ion-input
+      type="number"
+      placeholder="Stock"
+      [(ngModel)]="newProduct.stock"
+      aria-required="true"
+    ></ion-input>
+  </ion-item>
+
+  <div>
+    <ion-button
+      (click)="addProduct()"
+      expand="block"
+      fill="clear"
+      shape="round"
+    >
+      Agregar Producto
+    </ion-button>
+  </div>
+</div>

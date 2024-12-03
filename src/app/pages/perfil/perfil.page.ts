@@ -6,11 +6,11 @@ import { AuthService } from '../../services/auth.service';
 import { AvatarService } from '../../services/avatar.service';
 
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.page.html',
-  styleUrls: ['./menu.page.scss'],
+  selector: 'app-perfil',
+  templateUrl: './perfil.page.html',
+  styleUrls: ['./perfil.page.scss'],
 })
-export class MenuPage implements OnInit {
+export class PerfilPage implements OnInit {
   profile = null;
 
   constructor(
@@ -24,9 +24,7 @@ export class MenuPage implements OnInit {
       this.profile = data;
     });
   }
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+  ngOnInit() {}
 
   async logout() {
     await this.authService.logout();
@@ -38,7 +36,7 @@ export class MenuPage implements OnInit {
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.Base64,
-      source: CameraSource.Prompt, // Camera, Photos or Prompt!
+      source: CameraSource.Camera, // Camera, Photos or Prompt!
     });
 
     if (image) {

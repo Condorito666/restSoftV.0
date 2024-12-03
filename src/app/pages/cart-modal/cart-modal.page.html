@@ -1,31 +1,30 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="dismiss()">
-        <ion-icon
-          slot="icon-only"
-          name="arrow-back"
-          color="secondary"
-        ></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title class="ion-text-center"
-      ><img src="./assets/imgs/logo.png" class="logo" alt=""
-    /></ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="clear" color="secondary"> Help </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-header></app-header>
 <ion-content class="ion-padding">
   <ion-list *ngIf="cart.length > 0">
-    <ion-item *ngFor="let item of cart" lines="none">
-      <ion-text color="primary" slot="start">{{item.amount}}x </ion-text>
-      <ion-label color="primary">{{item.title}}</ion-label>
-      <ion-text color="primay" slot="end">
-        {{item.price | currency:'USD'}}
-      </ion-text>
-    </ion-item>
+    <ion-item-sliding *ngFor="let cartItem of cart">
+      <ion-item lines="none">
+        <ion-thumbnail slot="start">
+          <img *ngIf="cartItem.product.imageUrl" [src]="cartItem.product.imageUrl" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2 class="order-name">{{ cartItem.product.name }}</h2>
+          <p>${{ cartItem.product.price }}</p>
+        </ion-label>
+        <div class="quantity-container">
+          <ion-button size="small" (click)="increaseQuantity(cartItem)" color="success">
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </ion-button>
+          <p>{{ cartItem.quantity }}</p>
+          <ion-button size="small" (click)="decreaseQuantity(cartItem)" color="danger" shape="round">
+            <ion-icon name="remove-circle-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-item>
+
+      <ion-item-options side="end" (ionSwipe)="remove(cartItem)">
+        <ion-item-option (click)="remove(cartItem)" color="danger" expandable>Delete</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 
   <ion-text color="tertiary" *ngIf="cart.length == 0" class="ion-text-center">
@@ -34,20 +33,15 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar
-    [color]="cart.length > 0 ? 'tertiary' : 'secondary'"
-    class="ion-text-center"
-  >
-    <ion-button
-      (click)="dismiss()"
-      fill="clear"
-      color="light"
-      *ngIf="cart.length == 0"
-    >
+  <ion-toolbar [color]="cart.length > 0 ? 'tertiary' : 'secondary'" class="ion-text-center">
+    <ion-button (click)="dismiss()" fill="clear" color="light" *ngIf="cart.length == 0">
       <h3>COMPRA al toque longi!</h3>
     </ion-button>
     <ion-text *ngIf="cart.length > 0">
-      <h3>Total: {{cartSum | currency:'USD'}}</h3>
+      <h3>Total: {{ cartSum + tip | currency:'CLP' }}</h3>
     </ion-text>
+    <ion-button expand="block" strong="true" (click)="promptForTip()" color="primary" *ngIf="cart.length > 0">
+      Guardar y Pagar
+    </ion-button>
   </ion-toolbar>
 </ion-footer>

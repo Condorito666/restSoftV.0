@@ -1,55 +1,36 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="tabs/home" text=""></ion-back-button>
-    </ion-buttons>
-    <ion-title class="ion-text-center"
-      ><img src="./assets/imgs/logo.png" class="logo" alt=""
-    /></ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="clear"> Help </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-<ion-content class="ion-text-center">
-  <ion-text class="ion-hide-md-down">
-    <h1>elige tu pipza</h1>
-  </ion-text>
-  <ion-grid fixed>
-    <ion-row class="ion-justify-content-center">
-      <ion-col size="12" size-sm="6" size-md="4" *ngFor="let p of products">
-        <ion-card>
-          <div
-            tappable
-            [routerLink]="[p.id]"
-            class="product-image"
-            [style.background-image]="'url('+p.img+')'"
-          ></div>
-          <ion-card-content tappable [routerLink]="[ p.id]">
-            <ion-label>
-              <b>{{ p.title}}</b>
-              <p>{{ p.price | currency: 'USD' }}</p>
-            </ion-label>
-          </ion-card-content>
-          <ion-button
-            class="ion-no-margin"
-            expand="full"
-            (click)="addProduct(p)"
-          >
-            <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
-          </ion-button>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <ion-fab
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-    class="ion-hide-md-up"
-  >
-    <ion-fab-button (click)="openFilter()">
-      <ion-icon name="filter"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+<ion-content>
+  <ion-segment (ionChange)="filterProducts($event.detail.value)">
+    <ion-segment-button value="all"> All </ion-segment-button>
+    <ion-segment-button
+      *ngFor="let category of categories"
+      [value]="category.slug"
+    >
+      {{ category.title }}
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let product of filteredProducts">
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <img *ngIf="product.imageUrl" [src]="product.imageUrl" />
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ product.name }}</h2>
+          <p>{{ product.description }}</p>
+          <p>${{ product.price }}</p>
+          <p>Stock: {{ product.stock }}</p>
+        </ion-label>
+        <ion-button (click)="addProductToCart(product)">Add to Cart</ion-button>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="primary" (click)="editProduct(product)">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="deleteProduct(product)">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>
