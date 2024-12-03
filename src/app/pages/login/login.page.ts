@@ -9,6 +9,8 @@ import {
 } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+
 
 @Component({
   selector: 'app-login',
@@ -19,13 +21,15 @@ export class LoginPage implements OnInit {
   showPassword = false;
 
   credentials: FormGroup;
+  auth = getAuth();
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private alertController: AlertController,
     private loadingController: LoadingController,
-    private authService: AuthService
+    private authService: AuthService,
+
   ) {}
   // Easy access for form fields
   get email() {
@@ -71,6 +75,37 @@ export class LoginPage implements OnInit {
     }
   }
 
+  async resetPassword() {
+    const email = this.credentials.get('email')?.value;
+    if (!email) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'No se pudo enviar el correo de restablecimiento. Verifica el email y vuelve a intentarlo.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+      return;
+    }
+  
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+      const alert = await this.alertController.create({
+        header: 'Correo enviado',
+        message: 'Hemos enviado un correo para restablecer tu contraseña. Revisa tu bandeja de entrada.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    } catch (error) {
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'No se pudo enviar el correo de restablecimiento. Verifica el email y vuelve a intentarlo.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    }
+  }
+  
+
   async showAlert(header, message) {
     const alert = await this.alertController.create({
       header,
@@ -78,5 +113,9 @@ export class LoginPage implements OnInit {
       buttons: ['OK'],
     });
     await alert.present();
+
+    
+
+
   }
 }
