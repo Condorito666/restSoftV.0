@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "606869499090",
+    "project_id": "prueba3-631b4",
+    "storage_bucket": "prueba3-631b4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606869499090:android:12b3764e9e238a4459910b",
+        "android_client_info": {
+          "package_name": "pizzeria.prueba.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuzvAS4mZ_KdMaP3cvBXSJqReVvEDNazA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
